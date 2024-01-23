@@ -16,3 +16,26 @@ spring:
       host: 127.0.0.1
       port: 6379
       password: 123456
+  elasticsearch:
+    uris:
+      - https://4cb201b73e7948b5b133c80e53751a99.eu-south-1.aws.elastic-cloud.com:9243
+    username: elastic
+    password: Gc6NEPDLI4AQPe5lf2rfINXH
+    ssl:
+      verification-mode: none
+
+  rabbitmq:
+    addresses: "amqp://guest:guest@localhost"
+    virtual-host: novel
+    template:
+      retry:
+        # 开启重试
+        enabled: true
+        # 最大重试次数
+        max-attempts: 3
+        # 第一次和第二次重试之间的持续时间
+        initial-interval: "3s"
+
+logging:
+  level:
+    root: debug
