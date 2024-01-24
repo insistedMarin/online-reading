@@ -1,5 +1,6 @@
 package org.wy.online_reading.dto.es;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -98,7 +99,6 @@ public class EsBookDto {
      * 是否收费;1-收费 0-免费
      */
     private Integer isVip;
-
     public static EsBookDto build(BookInfo bookInfo){
         return EsBookDto.builder()
                 .id(bookInfo.getId())

@@ -1,6 +1,8 @@
 package org.wy.online_reading.core.config;
 
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.client.RestClient;
@@ -27,8 +29,16 @@ import java.security.cert.X509Certificate;
 public class EsConfig {
 
     @Bean
-    JacksonJsonpMapper jacksonJsonpMapper() {
-        return new JacksonJsonpMapper();
+    public ObjectMapper objectMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        // Configure the ObjectMapper to ignore unknown properties globally
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return mapper;
+    }
+
+    @Bean
+    JacksonJsonpMapper jacksonJsonpMapper(ObjectMapper objectMapper) {
+        return new JacksonJsonpMapper(objectMapper);
     }
 
     @ConditionalOnProperty(value = "spring.elasticsearch.ssl.verification-mode", havingValue = "none")

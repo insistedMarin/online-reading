@@ -36,6 +36,9 @@ spring:
         max-attempts: 3
         # 第一次和第二次重试之间的持续时间
         initial-interval: "3s"
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
 
 logging:
   level:

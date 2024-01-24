@@ -54,8 +54,20 @@ public class EsSearchServiceImpl implements SearchService {
                         );
                     }
                     // 分页
+
+//                    SearchRequest.Builder searchBuilder = s.index(EsConsts.BookIndex.INDEX_NAME)
+//                            .query(q -> q
+//                                    .matchAll(m -> m));
+//                    if (!StringUtils.isBlank(condition.getSort())) {
+//                        searchBuilder.sort(o ->
+//                                o.field(f -> f.field(StringUtils
+//                                                .underlineToCamel(condition.getSort().split(" ")[0]))
+//                                        .order(SortOrder.Desc))
+//                        );
+//                    }
                     searchBuilder.from((condition.getPageNum() - 1) * condition.getPageSize())
                             .size(condition.getPageSize());
+
 
                     return searchBuilder;
                 },
@@ -94,6 +106,7 @@ public class EsSearchServiceImpl implements SearchService {
 
             if (!StringUtils.isBlank(condition.getKeyword())) {
                 // 关键词匹配
+                log.info(condition.getKeyword());
                 b.must((q -> q.multiMatch(t -> t
                         .fields("bookName^2","authorName^1.8","bookDesc^0.1")
                         .query(condition.getKeyword())
