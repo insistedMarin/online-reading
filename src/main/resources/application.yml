@@ -23,6 +23,7 @@ spring:
     password: Gc6NEPDLI4AQPe5lf2rfINXH
     ssl:
       verification-mode: none
+    enable: true
 
   rabbitmq:
     addresses: "amqp://guest:guest@localhost"
