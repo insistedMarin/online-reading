@@ -53,18 +53,6 @@ public class EsSearchServiceImpl implements SearchService {
                                         .order(SortOrder.Desc))
                         );
                     }
-                    // 分页
-
-//                    SearchRequest.Builder searchBuilder = s.index(EsConsts.BookIndex.INDEX_NAME)
-//                            .query(q -> q
-//                                    .matchAll(m -> m));
-//                    if (!StringUtils.isBlank(condition.getSort())) {
-//                        searchBuilder.sort(o ->
-//                                o.field(f -> f.field(StringUtils
-//                                                .underlineToCamel(condition.getSort().split(" ")[0]))
-//                                        .order(SortOrder.Desc))
-//                        );
-//                    }
                     searchBuilder.from((condition.getPageNum() - 1) * condition.getPageSize())
                             .size(condition.getPageSize());
 
@@ -108,7 +96,7 @@ public class EsSearchServiceImpl implements SearchService {
                 // 关键词匹配
                 log.info(condition.getKeyword());
                 b.must((q -> q.multiMatch(t -> t
-                        .fields("bookName^2","authorName^1.8","bookDesc^0.1")
+                        .fields("book_name^2","author_name^1.8","book_desc^0.1")
                         .query(condition.getKeyword())
                 )
                 ));
@@ -117,14 +105,14 @@ public class EsSearchServiceImpl implements SearchService {
             // 精确查询
             if (Objects.nonNull(condition.getWorkDirection())) {
                 b.must(TermQuery.of(m -> m
-                        .field("workDirection")
+                        .field("work_direction")
                         .value(condition.getWorkDirection())
                 )._toQuery());
             }
 
             if (Objects.nonNull(condition.getCategoryId())) {
                 b.must(TermQuery.of(m -> m
-                        .field("categoryId")
+                        .field("category_id")
                         .value(condition.getCategoryId())
                 )._toQuery());
             }
@@ -132,21 +120,21 @@ public class EsSearchServiceImpl implements SearchService {
             // 范围查询
             if (Objects.nonNull(condition.getWordCountMin())) {
                 b.must(RangeQuery.of(m -> m
-                        .field("wordCount")
+                        .field("word_count")
                         .gte(JsonData.of(condition.getWordCountMin()))
                 )._toQuery());
             }
 
             if (Objects.nonNull(condition.getWordCountMax())) {
                 b.must(RangeQuery.of(m -> m
-                        .field("wordCount")
+                        .field("word_count")
                         .lt(JsonData.of(condition.getWordCountMax()))
                 )._toQuery());
             }
 
             if (Objects.nonNull(condition.getUpdateTimeMin())) {
                 b.must(RangeQuery.of(m -> m
-                        .field("lastChapterUpdateTime")
+                        .field("last_chapter_update_time")
                         .gte(JsonData.of(condition.getUpdateTimeMin().getTime()))
                 )._toQuery());
             }
